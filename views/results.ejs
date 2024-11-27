@@ -1028,14 +1028,14 @@
                 }),
               });
 
-              const { clientSecret, error } = await response.json();
+              const { clientSecret, status, error } = await response.json();
               console.log("received client secret:", clientSecret);
 
               if (error) {
                 hideLoader();
                 alert("Error creating payment intent");
                 return;
-              } else {
+              } else if (clientSecret) {
                 const { error, paymentIntent } =
                   await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
@@ -1053,6 +1053,33 @@
                 } else if (paymentIntent.status === "succeeded") {
                   hideLoader();
                   console.log("Payment succeeded!\n", paymentIntent);
+
+                  const response = await fetch(`/register-domain`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      domain: selectedDomainName,
+                      customer_id: customerID,
+                      plan_id: selectedEmailPlan,
+                    }),
+                  });
+
+                  const result = await response.json();
+
+                  console.log(result);
+
+                  if (result.status) {
+                    hideLoader();
+                    showSuccessNotification();
+                  } else {
+                    hideLoader();
+                    alert("Domain registration failed: " + result.error);
+                  }
+                } else if (status) {
+                  hideLoader();
+                  console.log("Payment succeeded!\n");
 
                   const response = await fetch(`/register-domain`, {
                     method: "POST",

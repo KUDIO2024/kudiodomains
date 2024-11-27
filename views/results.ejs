@@ -1030,6 +1030,7 @@
 
               const { clientSecret, status, error } = await response.json();
               console.log("received client secret:", clientSecret);
+              console.log("received status: ", status);
 
               if (error) {
                 hideLoader();
@@ -1077,7 +1078,7 @@
                     hideLoader();
                     alert("Domain registration failed: " + result.error);
                   }
-                } else if (status) {
+                } else if (status == "succeeded") {
                   hideLoader();
                   console.log("Payment succeeded!\n");
 

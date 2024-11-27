@@ -1030,7 +1030,7 @@
 
               const { clientSecret, status, error } = await response.json();
               console.log("received client secret:", clientSecret);
-              console.log("received status: ", status);
+              console.log("received status: ", status, typeof status);
 
               if (error) {
                 hideLoader();

@@ -1014,7 +1014,7 @@
               //     (parseFloat(selectedEmailPrice) || 0)) *
               //     100
               // );
-              const totalPrice = 200;
+              const totalPrice = 100;
               console.log("totalprice stripe ===============>", totalPrice);
 
               const response = await fetch(`/create-payment-intent`, {
@@ -1078,7 +1078,7 @@
                     hideLoader();
                     alert("Domain registration failed: " + result.error);
                   }
-                } else if (status == "succeeded") {
+                } else if (status === "succeeded") {
                   hideLoader();
                   console.log("Payment succeeded!\n");
 
